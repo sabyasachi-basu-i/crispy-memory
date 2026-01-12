@@ -117,8 +117,8 @@ See [architecture.md](docs/architecture.md) for detailed technical design.
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/tytan-tech/tytan-lendingops.git
-cd tytan-lendingops
+git clone https://github.com/sabyasachi-basu-i/crispy-memory.git
+cd crispy-memory
 
 # 2. Configure Terraform
 cd infra
@@ -158,7 +158,7 @@ bq query 'SELECT * FROM tytan_lending_ops.cases LIMIT 5'
 ## Project Structure
 
 ```
-tytan-lendingops/
+crispy-memory/
 │
 ├── README.md                          # This file
 ├── .gitignore                         # Git ignore rules
@@ -522,7 +522,7 @@ Ready to deploy?
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/tytan-tech/tytan-lendingops.git
+git clone https://github.com/sabyasachi-basu-i/crispy-memory.git
 
 # 2. Read the deployment guide
 cat docs/deployment_guide.md
