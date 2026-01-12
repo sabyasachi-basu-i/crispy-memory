@@ -86,8 +86,8 @@ gcloud services enable \
 ### Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/tytan-tech/tytan-lendingops.git
-cd tytan-lendingops
+git clone https://github.com/sabyasachi-basu-i/crispy-memory.git
+cd crispy-memory
 ```
 
 ### Step 2: Configure Environment Variables
@@ -506,8 +506,8 @@ log_retention_days = 2555  # 7 years
 ```bash
 gcloud builds triggers create github \
   --name="tytan-lending-deploy" \
-  --repo-name="tytan-lendingops" \
-  --repo-owner="tytan-tech" \
+  --repo-name="crispy-memory" \
+  --repo-owner="sabyasachi-basu-i" \
   --branch-pattern="^main$" \
   --build-config="cloudbuild.yaml"
 ```
