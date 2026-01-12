@@ -307,45 +307,6 @@ See [operations_runbook.md](docs/operations_runbook.md#disaster-recovery-procedu
 
 ---
 
-## Demo for Partner Qualification
-
-### What to Show
-
-1. **Business Problem** (5 min)
-   - Walk through `docs/solution_overview.md`
-   - Highlight pain points: manual re-keying, missing docs, audit gaps
-   - Show KPI targets: 70% reduction in processing time
-
-2. **Architecture** (10 min)
-   - Display Mermaid diagrams
-   - Explain event-driven workflow
-   - Emphasize security: least privilege IAM, audit logging, encryption
-
-3. **Live Demo** (15 min)
-   - Create case via API
-   - Upload document (show GCS bucket, Pub/Sub message)
-   - Watch Document AI worker extract fields (BigQuery real-time)
-   - Query chatbot for status
-   - Show audit trail in BigQuery
-
-4. **Operational Excellence** (10 min)
-   - Show Terraform deployment speed (< 20 min)
-   - Demonstrate monitoring dashboard
-   - Walk through incident response runbook
-   - Highlight cost controls (partitioning, lifecycle policies)
-
-5. **Compliance & Security** (10 min)
-   - Review IAM service accounts (least privilege)
-   - Show audit log export to GCS
-   - Explain 7-year retention for ECOA compliance
-   - Demonstrate field correction audit trail
-
-6. **Q&A** (10 min)
-
-**Total**: 60 minutes
-
----
-
 ## Customization for Customers
 
 This solution is designed to be **replicable** with minimal changes:
@@ -456,9 +417,9 @@ See [security_governance.md](docs/security_governance.md) for detailed complianc
 
 ### Contact
 
-- **Technical Support**: support@tytan.tech
-- **Sales Inquiries**: sales@tytan.tech
-- **Partner Program**: partners@tytan.tech
+- **Technical Support**: support@tytantech.com
+- **Sales Inquiries**: sales@tytantech.com
+- **Partner Program**: partners@tytantech.com
 
 ---
 
@@ -466,7 +427,7 @@ See [security_governance.md](docs/security_governance.md) for detailed complianc
 
 Copyright © 2026 Tytan Technology Inc. All rights reserved.
 
-This solution is provided as a Google Cloud Partner Solution reference implementation.
+This solution is provided as a Google Cloud Solution reference implementation.
 
 ---
 
@@ -536,6 +497,6 @@ Questions? See [docs/deployment_guide.md](docs/deployment_guide.md) or contact s
 
 ---
 
-**Built for Google Cloud Partner Qualification | Production-Ready | Deploy in < 60 Minutes**
+**Built for Google Cloud Partnerhip | Production-Ready | Deploy in < 60 Minutes**
 
 **Version**: 1.0 | **Last Updated**: 2026-01-12
