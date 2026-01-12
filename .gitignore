@@ -1,1 +1,66 @@
-# gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+*.egg-info/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+.terraform.lock.hcl
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# GCP credentials
+*.json
+!sample_data/*.json
+service-account-key.json
+credentials.json
+
+# Build artifacts
+dist/
+build/
+*.egg
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Coverage
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

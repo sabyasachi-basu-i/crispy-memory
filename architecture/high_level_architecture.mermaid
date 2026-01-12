@@ -1,0 +1,86 @@
+graph TB
+    subgraph "Intake Channels"
+        A1[Web Form UI]
+        A2[Gmail/Drive]
+        A3[Partner API]
+        A4[Mobile Upload]
+    end
+
+    subgraph "API Layer - Cloud Run"
+        B[Cloud Run API<br/>POST /cases<br/>POST /cases/:id/documents<br/>GET /cases/:id<br/>POST /cases/:id/review]
+    end
+
+    subgraph "Storage Layer"
+        C1[(Cloud Storage<br/>Documents)]
+        C2[(BigQuery<br/>Cases & Metadata)]
+    end
+
+    subgraph "Event Processing"
+        D1[Pub/Sub Topic<br/>document.uploaded]
+        D2[Pub/Sub Topic<br/>extraction.completed]
+        D3[Pub/Sub DLQ<br/>Failed Messages]
+    end
+
+    subgraph "Document Processing - Cloud Run"
+        E[Document AI Worker<br/>• Pull from Pub/Sub<br/>• Extract with Doc AI<br/>• Write to BigQuery]
+    end
+
+    subgraph "AI Services"
+        F1[Document AI<br/>Processors]
+        F2[Dialogflow CX<br/>Agent]
+    end
+
+    subgraph "Member Self-Service"
+        G[Dialogflow Webhook<br/>Cloud Run<br/>• Query case status<br/>• Missing docs<br/>• Escalation]
+    end
+
+    subgraph "Monitoring & Security"
+        H1[Cloud Logging]
+        H2[Cloud Monitoring]
+        H3[IAM & Service Accounts]
+        H4[Secret Manager]
+    end
+
+    A1 --> B
+    A2 --> B
+    A3 --> B
+    A4 --> B
+
+    B --> C1
+    B --> C2
+    B --> D1
+
+    D1 --> E
+    E --> F1
+    E --> C2
+    E --> D2
+    E -.failure.-> D3
+
+    F2 <--> G
+    G --> C2
+
+    B --> H1
+    E --> H1
+    G --> H1
+
+    H2 -.monitors.-> B
+    H2 -.monitors.-> E
+    H2 -.monitors.-> D1
+
+    H3 -.secures.-> B
+    H3 -.secures.-> E
+    H3 -.secures.-> G
+
+    H4 -.provides secrets.-> B
+    H4 -.provides secrets.-> E
+
+    style B fill:#4285F4,color:#fff
+    style E fill:#4285F4,color:#fff
+    style G fill:#4285F4,color:#fff
+    style C2 fill:#669DF6,color:#fff
+    style C1 fill:#669DF6,color:#fff
+    style F1 fill:#34A853,color:#fff
+    style F2 fill:#34A853,color:#fff
+    style D1 fill:#FBBC04,color:#000
+    style D2 fill:#FBBC04,color:#000
+    style D3 fill:#EA4335,color:#fff

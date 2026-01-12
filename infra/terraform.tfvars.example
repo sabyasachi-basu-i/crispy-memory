@@ -1,0 +1,65 @@
+# Tytan LendingOps & MemberAssist - Terraform Variables Example
+# Copy this file to terraform.tfvars and customize for your environment
+
+# Required: GCP Project ID
+project_id = "your-gcp-project-id"
+
+# Region for GCP resources
+region = "us-central1"
+
+# Environment name (dev, staging, prod)
+environment = "dev"
+
+# BigQuery dataset name
+dataset_name = "tytan_lending_ops"
+
+# Cloud Storage bucket name prefix
+bucket_name_prefix = "tytan-lending"
+
+# Document AI Processor IDs (leave empty for mock mode during testing)
+# To create processors, go to: https://console.cloud.google.com/ai/document-ai
+docai_identity_processor_id = ""
+docai_form_processor_id     = ""
+
+# Email for monitoring alerts
+alert_email = "devops@yourcompany.com"
+
+# Cloud Run scaling configuration
+# Dev environment: scale to zero for cost savings
+api_min_instances     = 0
+api_max_instances     = 10
+worker_min_instances  = 0
+worker_max_instances  = 10
+webhook_min_instances = 0
+webhook_max_instances = 5
+
+# Audit logging (enable for production)
+enable_audit_logging = true
+
+# Log retention (7 years for compliance = 2555 days)
+log_retention_days = 2555
+
+# ======================================================================
+# ENVIRONMENT-SPECIFIC EXAMPLES
+# ======================================================================
+
+# --- Development ---
+# environment           = "dev"
+# api_min_instances     = 0
+# worker_min_instances  = 0
+# enable_audit_logging  = false
+# log_retention_days    = 30
+
+# --- Staging ---
+# environment           = "staging"
+# api_min_instances     = 1
+# worker_min_instances  = 0
+# enable_audit_logging  = true
+# log_retention_days    = 90
+
+# --- Production ---
+# environment           = "prod"
+# api_min_instances     = 2
+# worker_min_instances  = 1
+# enable_audit_logging  = true
+# log_retention_days    = 2555
