@@ -1,0 +1,65 @@
+sequenceDiagram
+    participant Member
+    participant WebUI as Web Form UI
+    participant API as Cloud Run API
+    participant GCS as Cloud Storage
+    participant BQ as BigQuery
+    participant PubSub as Pub/Sub Topic
+    participant Worker as Document AI Worker
+    participant DocAI as Document AI
+    participant Dialogflow as Dialogflow CX
+    participant Webhook as Dialogflow Webhook
+
+    Note over Member,WebUI: Step 1: Member Submits Application
+    Member->>WebUI: Fill loan application form
+    WebUI->>API: POST /cases<br/>{member_id, loan_type, amount}
+    API->>BQ: INSERT into cases table<br/>status=SUBMITTED
+    BQ-->>API: case_id: CU-2024-00123
+    API-->>WebUI: Return case_id + required docs
+    WebUI-->>Member: Confirmation: "Application submitted"
+
+    Note over Member,Worker: Step 2: Member Uploads Documents
+    Member->>WebUI: Upload driver's license (PDF)
+    WebUI->>API: POST /cases/CU-2024-00123/documents<br/>{file, document_type}
+    API->>GCS: Upload to gs://.../cases/CU-2024-00123/doc-abc-123.pdf
+    GCS-->>API: gcs_uri
+    API->>BQ: INSERT into documents table
+    API->>PubSub: PUBLISH document.uploaded event<br/>{case_id, document_id, gcs_uri}
+    PubSub-->>API: message_id
+    API-->>WebUI: document_id: doc-abc-123
+    WebUI-->>Member: "Document uploaded successfully"
+
+    Note over PubSub,DocAI: Step 3: Automated Extraction
+    Worker->>PubSub: PULL subscription message
+    PubSub-->>Worker: {case_id, document_id, gcs_uri, document_type}
+    Worker->>GCS: GET document content
+    GCS-->>Worker: PDF bytes
+    Worker->>DocAI: process_document()<br/>processor=identity_processor
+    DocAI-->>Worker: Extracted entities<br/>[{name, DOB, license_num, confidence}]
+    Worker->>BQ: INSERT into extracted_fields<br/>foreach field
+    Worker->>BQ: UPDATE cases SET status=READY_FOR_REVIEW<br/>WHERE case_id=...
+    Worker->>PubSub: ACK message
+    Worker->>PubSub: PUBLISH extraction.completed
+
+    Note over Member,Webhook: Step 4: Member Checks Status (Chatbot)
+    Member->>Dialogflow: "What's my application status?"
+    Dialogflow->>Webhook: POST /dialogflow-webhook<br/>{intent: check_status, params: {case_id}}
+    Webhook->>BQ: SELECT case, documents, extracted_fields<br/>WHERE case_id=...
+    BQ-->>Webhook: {status, documents_received, missing_docs}
+    Webhook-->>Dialogflow: {fulfillment_text: "Status: Under Review..."}
+    Dialogflow-->>Member: "Your app is under review.<br/>✅ License received<br/>⏳ Waiting for bank statement"
+
+    Note over Member,BQ: Step 5: Human Review (if needed)
+    rect rgb(255, 240, 200)
+        Note over API,BQ: Low confidence fields trigger review
+        API->>BQ: SELECT cases WHERE status=NEEDS_REVIEW
+        BQ-->>API: [{case_id, document_id, low_confidence_fields}]
+        Member->>API: POST /cases/CU-2024-00123/review<br/>{corrections, approval_status}
+        API->>BQ: UPDATE extracted_fields<br/>SET value=corrected_value
+        API->>BQ: INSERT into field_corrections<br/>(audit trail)
+        API->>BQ: UPDATE cases SET status=APPROVED
+        API-->>Member: "Review complete"
+    end
+
+    Note over Member,BQ: Step 6: Final Outcome
+    API->>Member: Email: "Your loan has been approved!"

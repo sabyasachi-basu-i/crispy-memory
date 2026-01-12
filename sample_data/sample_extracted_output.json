@@ -1,0 +1,59 @@
+{
+  "case_id": "CU-2024-00123",
+  "document_id": "doc-abc-123",
+  "document_type": "drivers_license",
+  "extraction_status": "success",
+  "extracted_fields": [
+    {
+      "field_name": "full_name",
+      "value": "Sarah Johnson",
+      "confidence": 0.98,
+      "page_number": 0
+    },
+    {
+      "field_name": "date_of_birth",
+      "value": "1989-05-12",
+      "confidence": 0.99,
+      "page_number": 0
+    },
+    {
+      "field_name": "license_number",
+      "value": "D1234567",
+      "confidence": 0.95,
+      "page_number": 0
+    },
+    {
+      "field_name": "address",
+      "value": "123 Main St, Anytown, CA 12345",
+      "confidence": 0.92,
+      "page_number": 0
+    },
+    {
+      "field_name": "expiration_date",
+      "value": "2027-05-12",
+      "confidence": 0.97,
+      "page_number": 0
+    },
+    {
+      "field_name": "state",
+      "value": "CA",
+      "confidence": 0.99,
+      "page_number": 0
+    },
+    {
+      "field_name": "gender",
+      "value": "F",
+      "confidence": 0.96,
+      "page_number": 0
+    },
+    {
+      "field_name": "height",
+      "value": "5'06\"",
+      "confidence": 0.88,
+      "page_number": 0
+    }
+  ],
+  "avg_confidence": 0.955,
+  "needs_review": false,
+  "processed_at": "2024-01-15T10:36:30Z"
+}

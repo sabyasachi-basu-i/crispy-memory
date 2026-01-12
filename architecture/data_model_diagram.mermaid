@@ -1,0 +1,71 @@
+erDiagram
+    cases ||--o{ documents : has
+    cases ||--o{ extracted_fields : contains
+    cases ||--o{ audit_log : tracks
+    documents ||--o{ extracted_fields : extracted_from
+    documents ||--o{ audit_log : tracks
+    extracted_fields ||--o| field_corrections : may_have
+
+    cases {
+        string case_id PK
+        string member_id
+        string loan_type
+        numeric loan_amount
+        string status
+        timestamp created_at
+        timestamp updated_at
+        string member_contact_email
+        string member_contact_phone
+        string source_channel
+        json metadata
+    }
+
+    documents {
+        string document_id PK
+        string case_id FK
+        string document_type
+        string gcs_uri
+        int64 file_size_bytes
+        string mime_type
+        timestamp uploaded_at
+        string status
+        string file_hash_sha256
+    }
+
+    extracted_fields {
+        string extraction_id PK
+        string case_id FK
+        string document_id FK
+        string field_name
+        string value
+        float64 confidence
+        int64 page_number
+        json bounding_box
+        timestamp extracted_at
+        string processor_id
+        boolean is_corrected
+    }
+
+    field_corrections {
+        string correction_id PK
+        string extraction_id FK
+        string case_id FK
+        string document_id FK
+        string field_name
+        string original_value
+        string corrected_value
+        string reviewer_id
+        timestamp review_timestamp
+        string correction_reason
+    }
+
+    audit_log {
+        string event_id PK
+        string case_id FK
+        string event_type
+        string actor
+        timestamp timestamp
+        json payload
+        string ip_address
+        string user_agent
+    }
